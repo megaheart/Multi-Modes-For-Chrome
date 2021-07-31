@@ -18,12 +18,13 @@
         "48": "icons/icon48.png",
         "128": "icons/icon128.png"
       },
-      "default_title": "Multi Modes for Chrome"
+      "default_title": "Multi Modes for Chrome",
+      "default_popup": "popup.html"
     },
-    "content_scripts": [
-      {
-        "matches": ["*://*.fbcdn.net/*"]
-        ""
-      }
-    ]
+    "permissions":["tabs", "storage"],
+    "options_ui": {
+      "page": "settingPage.html",
+      "open_in_tab": true
+    }
+
   }

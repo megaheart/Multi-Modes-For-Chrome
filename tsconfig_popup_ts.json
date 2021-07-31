@@ -1,11 +1,14 @@
 {
     "compilerOptions": {
-      "module": "commonjs",
       "noImplicitAny": true,
       "removeComments": true,
       "preserveConstEnums": true,
-      "sourceMap": true
+      "sourceMap": true,
+      "target": "ES6",
+      "lib": ["DOM", "ES2015", "ES2016"],
+      "outFile":"popup.js"
     },
+    
     "files": [
       "popup.ts"
     ]

@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "noImplicitAny": true,
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "sourceMap": true,
+      "target": "ES6",
+      "lib": ["DOM", "ES2015"],
+      "outFile":"settingPage.js"
+    },
+    
+    "files": [
+      "settingPage.ts"
+    ]
+}
