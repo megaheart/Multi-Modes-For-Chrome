@@ -20,6 +20,9 @@ class CreateNewModeLogic{
         this.panel.querySelector(".cancel").addEventListener("click", ()=>{this.cancelButton_click();});
         this.dataManager = dataManager;
         this.settingInfo = settingInfo;
+        document.querySelector("#load-to-new-mode-button").addEventListener("click", ()=>{
+            this.togglePanel();
+        });
     }
     private ingoreWebsite(url:string):boolean{
         if(url === undefined) return false;

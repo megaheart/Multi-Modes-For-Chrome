@@ -79,8 +79,17 @@ div#header>.button{
     /*height: 32px;*/
     /*align-content: center;*/
 }
+div#header>#load-to-new-mode-button {
+    padding: 8px;
+    margin-left: 0;
+    /*width: 154px;*/
+    width: 206px;
+}
 div#header>#load-to-new-mode-button>span:first-child{
-    margin-left: -15px;
+    margin-left: 0;
+}
+div#header>#load-to-new-mode-button>span:last-child{
+    margin-left: 0;
 }
 div#create-new-mode-panel{
     position: absolute;
@@ -122,6 +131,49 @@ div#create-new-mode-panel>button.cancel{
     grid-column: 2;
     margin: 0 15px 15px 7px;
     color: rgb(253, 99, 99);
+}
+div#sync-panel{
+    position: absolute;
+    top: 47px;
+    right: 0;
+    width: 150px;
+    border-radius: 2px;
+    background: var(--color-button);
+    z-index: 9999;
+    box-shadow: 0px 3px 7px #000000;
+    display: grid;
+}
+div#sync-panel::after{
+    position: absolute;
+    top: -16px;
+    right: 17px;
+    height: 16px;
+    width: 16px;
+    display: block;
+    content: '';
+    border: 8px solid transparent;
+    border-bottom: 8px solid;
+    border-bottom-color: var(--color-button);
+    box-sizing: border-box;
+}
+div#sync-panel>ul{
+    list-style: none;
+}
+div#sync-panel>ul>li>button{
+    padding: 10px 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    grid-template-rows: auto;
+}
+div#sync-panel>ul>li>button>span:first-child{
+    grid-column: 1/2;
+    grid-row: 1;
+}
+div#sync-panel>ul>li>button>span:last-child{
+    grid-column: 2/3;
+    grid-row: 1;
+    text-align: left;
 }
 div#groups-viewer{
     margin-top: 20px;

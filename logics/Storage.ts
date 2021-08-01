@@ -49,14 +49,26 @@ class DataManager{
     }
     saveMode(mode:Mode){
         if(this.modeKeyList === undefined){
-            throw new Error("Please use getAllModes() first.");
+            throw new Error("Please use getAllModes() or getAllModeIds() first.");
         }
         if((mode.id == undefined) || !this.modeKeyList.includes(mode.id)){
-            mode.id = this.generateID();
+            mode.id = "-" + this.generateID();
             this.modeKeyList.unshift(mode.id);
             chrome.storage.local.set({["mode_id_list"]:this.modeKeyList});
         }
         chrome.storage.local.set({[mode.id]: mode}, null);
+    }
+    importManyMode(modes:Mode[]){
+        for(let i = 0; i < modes.length; i++){
+            if(this.modeKeyList === undefined){
+                throw new Error("Please use getAllModes() first.");
+            }
+            if(!this.modeKeyList.includes(modes[i].id)){
+                this.modeKeyList.push(modes[i].id);
+                chrome.storage.local.set({[modes[i].id]: modes[i]}, null);
+            }
+        }
+        chrome.storage.local.set({["mode_id_list"]:this.modeKeyList});
     }
     removeMode(mode:Mode){
         let index = this.modeKeyList.indexOf(mode.id);
@@ -66,13 +78,22 @@ class DataManager{
             chrome.storage.local.remove([mode.id], null);
         }
     }
-    async getAllModes():Promise<Mode[]>{
-        let keys = await this.getAllKeysOfModes();
-        if(keys === undefined){
-            this.modeKeyList = [];
-            return [];
+    async getAllModeIds():Promise<string[]>{
+        if(this.modeKeyList === undefined){
+            let keys = await this.getAllKeysOfModes();
+            if(keys) {
+                this.modeKeyList = keys;
+            }
+            else this.modeKeyList = [];
         }
-        this.modeKeyList = keys;
+        return this.modeKeyList;
+    }
+    async getAllModes():Promise<Mode[]>{
+        if(this.modeKeyList === undefined){
+            this.getAllModeIds();
+        }
+        if(this.modeKeyList.length === 0) return;
+        let keys = this.modeKeyList;
         let modes = [];
         for(var i = 0; i < keys.length; i++){
             let mode = await this.getMode(keys[i]);

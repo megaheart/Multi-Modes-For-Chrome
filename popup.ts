@@ -1,5 +1,6 @@
 /// <reference path="logics/CreateNewModeLogic.ts" />
 /// <reference path="logics/ModeBinding.ts" />
+/// <reference path="logics/SyncPanelLogic.ts" />
 
 let dataManager = new DataManager();
 let modeOperator = new ModeOperator();
@@ -10,9 +11,6 @@ async function Main() {
     ModeBinding.settingInfo = settingInfo;
     WebsiteListBinding.template = document.querySelector("#group-website-template");
     let currentModeIdSync = modeOperator.initialize();
-    document.querySelector("#load-to-new-mode-button").addEventListener("click", ()=>{
-        createNewModeLogic.togglePanel();
-    });
     let modeList = await dataManager.getAllModes();
     let currentModeId = await currentModeIdSync;
     for(var i = 0; i < modeList.length; i++){
@@ -31,6 +29,7 @@ async function Main() {
         ele = ele.querySelector<HTMLButtonElement>('.switch-mode-on');
         ele.disabled = true;
     }
+    let syncPanelLogic = new SyncPanelLogic(dataManager);
     // let listAsync = chrome.tabs.query({currentWindow: true});
     // let mainDiv = document.querySelector("div#main");
     

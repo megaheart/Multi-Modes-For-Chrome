@@ -31,6 +31,10 @@ class WebsiteListBinding{
     get length():number{
         return this.items.length;
     }
+    cloneWebsiteList(){
+        return [...this.items];
+    }
+    onListChanged:(sender:WebsiteListBinding, action:"insert" | "remove", index:number, value:Website)=>void;
     forEach(enumirator:(e:Website)=>void):void{
         this.items.forEach(enumirator);
     }
@@ -41,7 +45,9 @@ class WebsiteListBinding{
         let btn = li.querySelector<HTMLButtonElement>("button.remove-website-from-mode");
         btn.disabled = this._disableButtons;
         btn.addEventListener("click", ()=>{
-            this.removeAt(this.items.indexOf(value));
+            let index = this.items.indexOf(value);
+            this.removeAt(index);
+            if(this.onListChanged) this.onListChanged(this, "remove", index, value);
         });
         return li;
     }
@@ -55,14 +61,17 @@ class WebsiteListBinding{
             this.uList.insertBefore(this.generateElement(value), this.uList.children[index]);
         }
         this.items.splice(index, 0 , value);
+        if(this.onListChanged) this.onListChanged(this, "insert", index, value);
     }
     add(value:Website):void{
         this.uList.appendChild(this.generateElement(value));
         this.items.push(value);
+        if(this.onListChanged) this.onListChanged(this, "insert", this.items.length - 1, value);
     }
     removeAt(index:number){
         this.uList.children[index].remove();
         this.items.splice(index, 1);
+        //Event notifies at this.generateElement
     }
     //Return old Websites' array
     clearAllItem():Website[]{

@@ -9,7 +9,7 @@ class ModeBinding{
     private static template:HTMLTemplateElement;
     static settingInfo:SettingInfo;
     static modeOperator:ModeOperator;
-    static insertNewModeAtSecondOfGroupView(mode:Mode, dataManager:DataManager):ModeBinding{
+    static insertNewModeAtSecondOfGroupView(mode:Mode, dataManager:DataManager, addAtLast?:boolean):ModeBinding{
         if(this.milestone === undefined){
             this.milestone = document.querySelector("#groups-viewer");
             this.template = document.querySelector("#group-template");
@@ -33,7 +33,12 @@ class ModeBinding{
         div.querySelector(".remove-ok").addEventListener("click", ()=>{modeBinding.removeThisMode();});
         div.querySelector(".remove-cancel").addEventListener("click", ()=>{modeBinding.closeRemovePanelWithoutRemove();});
 
-        this.milestone.insertBefore(group, this.milestone.childNodes[2]);
+        if(addAtLast){
+            this.milestone.appendChild(group);
+        }
+        else{
+            this.milestone.insertBefore(group, this.milestone.childNodes[2]);
+        }
         return modeBinding;
     }
     private group:HTMLDivElement;
