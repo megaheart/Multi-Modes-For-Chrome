@@ -25,7 +25,7 @@ class CreateNewModeLogic{
         });
     }
     private ingoreWebsite(url:string):boolean{
-        if(url === undefined) return false;
+        if(url === undefined) return true;
         for(let i = 0; i < this.settingInfo.ignoreWebsites.length; i++){
             if(url.includes(this.settingInfo.ignoreWebsites[i])){
                 return true;

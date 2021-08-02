@@ -53,7 +53,7 @@ class ModeBinding{
         return this.mode.id;
     }
     static ingoreWebsite(url:string):boolean{
-        if(url === undefined) return false;
+        if(url === undefined) return true;
         for(let i = 0; i < ModeBinding.settingInfo.ignoreWebsites.length; i++){
             if(url.includes(ModeBinding.settingInfo.ignoreWebsites[i])){
                 return true;
