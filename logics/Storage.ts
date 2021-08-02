@@ -90,7 +90,7 @@ class DataManager{
     }
     async getAllModes():Promise<Mode[]>{
         if(this.modeKeyList === undefined){
-            this.getAllModeIds();
+            await this.getAllModeIds();
         }
         if(this.modeKeyList.length === 0) return;
         let keys = this.modeKeyList;

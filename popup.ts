@@ -6,6 +6,10 @@ let dataManager = new DataManager();
 let modeOperator = new ModeOperator();
 async function Main() {
     let settingInfo = await dataManager.getSettingInfo();
+    /// Add more ignore websites 
+    settingInfo.ignoreWebsites.push("extension://");
+    settingInfo.ignoreWebsites.push("edge://");
+    ///////////////////
     let createNewModeLogic = new CreateNewModeLogic(dataManager, settingInfo);
     ModeBinding.modeOperator = modeOperator;
     ModeBinding.settingInfo = settingInfo;
@@ -14,7 +18,7 @@ async function Main() {
     let modeList = await dataManager.getAllModes();
     let currentModeId = await currentModeIdSync;
     for(var i = 0; i < modeList.length; i++){
-        let binding = ModeBinding.insertNewModeAtSecondOfGroupView(modeList[i], dataManager);
+        let binding = ModeBinding.insertNewModeAtSecondOfGroupView(modeList[i], dataManager, true);
         if(currentModeId == modeList[i].id){
             let ele:HTMLDivElement|HTMLButtonElement = document.querySelector<HTMLDivElement>("#m-" + (await currentModeIdSync));
             ele.classList.add("current");
