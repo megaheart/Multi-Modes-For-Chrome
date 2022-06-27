@@ -1,9 +1,9 @@
 /// <reference path="ModeBinding.ts" />
 class ModeOperator{
-    currentModeBinding:ModeBinding;
+    currentModeBinding:ModeBinding|undefined;
     constructor() {
         this.currentModeBinding = undefined;
-        document.querySelector("#return-to-default-mode").addEventListener("click", ()=>{
+        document.querySelector("#return-to-default-mode")!.addEventListener("click", ()=>{
             this.switchModeOn(undefined);
         });
     }
@@ -15,7 +15,7 @@ class ModeOperator{
             });
         });
     }
-    async switchModeOn(mode:ModeBinding){
+    async switchModeOn(mode:ModeBinding|undefined){
         let close_tabIds:number[];
         let creatingTabsCount:number;
         if(this.currentModeBinding){
@@ -29,11 +29,11 @@ class ModeOperator{
                 if(ModeBinding.ingoreWebsite(tabs[i].url)){
                     continue;
                 }
-                close_tabIds.push(tabs[i].id);
+                close_tabIds.push(tabs[i].id!);
             }
             let btn = document.querySelector<HTMLButtonElement>("#default-mode");
-            btn.classList.remove("current");
-            btn.disabled = false;
+            btn!.classList.remove("current");
+            btn!.disabled = false;
         }
         if(mode){
             creatingTabsCount = mode.switchModeOn();
@@ -41,8 +41,8 @@ class ModeOperator{
         else{
             creatingTabsCount = 0;
             let btn = document.querySelector<HTMLButtonElement>("#default-mode");
-            btn.classList.add("current");
-            btn.disabled = true;
+            btn!.classList.add("current");
+            btn!.disabled = true;
         }
         //tabs' count when complete this function
         let tabsCountAfter = close_tabIds[0] + creatingTabsCount - close_tabIds.length + 1;
@@ -51,10 +51,10 @@ class ModeOperator{
             chrome.tabs.remove(close_tabIds[i]);
         }
         if(mode){
-            chrome.storage.local.set({["current_mode"]:mode.ModeID}, null);
+            chrome.storage.local.set({["current_mode"]:mode.ModeID}, undefined);
         }
         else{
-            chrome.storage.local.remove(["current_mode"], null);
+            chrome.storage.local.remove(["current_mode"], undefined);
         }
     }
 }

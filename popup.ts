@@ -20,18 +20,18 @@ async function Main() {
     for(var i = 0; i < modeList.length; i++){
         let binding = ModeBinding.insertNewModeAtSecondOfGroupView(modeList[i], dataManager, true);
         if(currentModeId == modeList[i].id){
-            let ele:HTMLDivElement|HTMLButtonElement = document.querySelector<HTMLDivElement>("#m-" + (await currentModeIdSync));
-            ele.classList.add("current");
-            ele = ele.querySelector<HTMLButtonElement>('.switch-mode-on');
-            ele.disabled = true;
+            let ele:HTMLDivElement|null = document.querySelector<HTMLDivElement>("#m-" + (await currentModeIdSync));
+            ele?.classList.add("current");
+            let ele1 : HTMLButtonElement|undefined|null = ele?.querySelector<HTMLButtonElement>('.switch-mode-on');
+            if(ele1) ele1.disabled = true;
             modeOperator.currentModeBinding = binding;
         }
     }
     if(currentModeId === undefined){
-        let ele:HTMLDivElement|HTMLButtonElement= document.querySelector<HTMLDivElement>("#default-mode");
-        ele.classList.add("current");
-        ele = ele.querySelector<HTMLButtonElement>('.switch-mode-on');
-        ele.disabled = true;
+        let ele:HTMLDivElement|null= document.querySelector<HTMLDivElement>("#default-mode");
+        ele?.classList.add("current");
+        let ele1 = ele!.querySelector<HTMLButtonElement>('.switch-mode-on');
+        ele1!.disabled = true;
     }
     let syncPanelLogic = new SyncPanelLogic(dataManager);
     // let listAsync = chrome.tabs.query({currentWindow: true});

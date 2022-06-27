@@ -288,14 +288,26 @@ div.group.editing>div.group-editor
     color: rgb(70, 70, 70);
     cursor: not-allowed;
 }
-.group-editor-main>.group-editor-area>ul>li>img:first-child{
-    margin-right: 8px;
+.group-editor-main>.group-editor-area>ul>li>div.website-header{
+    display: flex;
+    width: 193px;
+    align-items: center;
+    cursor: pointer;
 }
-.group-editor-main>.group-editor-area>ul>li>.website-title{
+.group-editor-main>.group-editor-area>ul>li>div.website-header>img:first-child{
+    margin-right: 8px;
+    height: 16px;
+    width: 16px;
+}
+.group-editor-main>.group-editor-area>ul>li>div.website-header>.website-title{
     color: rgb(19, 215, 241);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    user-select: none;
+}
+.group-editor-main>.group-editor-area>ul>li>div.website-header:hover>.website-title{
+    color: rgb(0, 184, 239);
 }
 div.group.editing>div.group-delete-alert{
     background: rgb(163, 2, 2);

@@ -4,7 +4,7 @@
 class DataManager{
     private s:string;
     private BASE:number;
-    private modeKeyList:string[];
+    private modeKeyList:string[]|undefined;
     constructor() {
         this.s = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         this.BASE = this.s.length;
@@ -36,7 +36,7 @@ class DataManager{
             });
         });
     }
-    async getMode(id:string):Promise<Mode>{
+    async getMode(id:string):Promise<Mode|undefined>{
         return new Promise((resolve, reject) => {
             chrome.storage.local.get([id], (items)=>{
                 if(items[id]){
@@ -56,7 +56,7 @@ class DataManager{
             this.modeKeyList.unshift(mode.id);
             chrome.storage.local.set({["mode_id_list"]:this.modeKeyList});
         }
-        chrome.storage.local.set({[mode.id]: mode}, null);
+        chrome.storage.local.set({[mode.id]: mode}, undefined);
     }
     importManyMode(modes:Mode[]){
         for(let i = 0; i < modes.length; i++){
@@ -65,17 +65,17 @@ class DataManager{
             }
             if(!this.modeKeyList.includes(modes[i].id)){
                 this.modeKeyList.push(modes[i].id);
-                chrome.storage.local.set({[modes[i].id]: modes[i]}, null);
+                chrome.storage.local.set({[modes[i].id]: modes[i]}, undefined);
             }
         }
         chrome.storage.local.set({["mode_id_list"]:this.modeKeyList});
     }
     removeMode(mode:Mode){
-        let index = this.modeKeyList.indexOf(mode.id);
-        if(index >= 0){
-            this.modeKeyList.splice(index, 1);
+        let index = this.modeKeyList?.indexOf(mode.id);
+        if(index && index >= 0){
+            this.modeKeyList?.splice(index, 1);
             chrome.storage.local.set({["mode_id_list"]:this.modeKeyList});
-            chrome.storage.local.remove([mode.id], null);
+            chrome.storage.local.remove([mode.id], undefined);
         }
     }
     async getAllModeIds():Promise<string[]>{
@@ -88,16 +88,16 @@ class DataManager{
         }
         return this.modeKeyList;
     }
-    async getAllModes():Promise<Mode[]>{
+    async getAllModes():Promise<Mode[]|undefined>{
         if(this.modeKeyList === undefined){
             await this.getAllModeIds();
         }
-        if(this.modeKeyList.length === 0) return;
+        if(!this.modeKeyList?.length || this.modeKeyList?.length === 0) return undefined;
         let keys = this.modeKeyList;
-        let modes = [];
+        let modes:Mode[] = [];
         for(var i = 0; i < keys.length; i++){
             let mode = await this.getMode(keys[i]);
-            if(mode === undefined) {
+            if(!mode) {
                 this.modeKeyList.splice(i,1);
                 chrome.storage.local.set({["mode_id_list"]:this.modeKeyList});
                 i--;

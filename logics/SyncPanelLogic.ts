@@ -17,21 +17,21 @@ class SyncPanelLogic{
     }
     private async pushButton_click(){
         let btn = this.panel.querySelector<HTMLButtonElement>("#sync-push");
-        btn.disabled = true;
+        btn!.disabled = true;
         let modes = await this.dataManager.getAllModes();
         let dataSync:{[key:string]:Mode} = {};
         modes.forEach(m => {
             dataSync[m.id] = m;
         });
         chrome.storage.sync.set({syncModes:dataSync}, ()=>{
-            btn.disabled = false;
+            btn!.disabled = false;
             this.togglePanel();
         });
         
     }
     private pullButton_click(){
         let btn = this.panel.querySelector<HTMLButtonElement>("#sync-pull");
-        btn.disabled = true;
+        btn!.disabled = true;
         chrome.storage.sync.get(["syncModes"], items=>{
             let dataSync:{[key:string]:Mode} = items["syncModes"];
             if(dataSync){
@@ -44,7 +44,7 @@ class SyncPanelLogic{
                     ModeBinding.insertNewModeAtSecondOfGroupView(mode, this.dataManager, true);
                 });
             }
-            btn.disabled = false;
+            btn!.disabled = false;
             this.togglePanel();
         });
     }
@@ -59,7 +59,7 @@ class SyncPanelLogic{
             div.addEventListener("click", ()=>{
                 this.togglePanel();
             });
-            document.querySelector("body").appendChild(div);
+            document.querySelector("body")!.appendChild(div);
             this.panel.hidden = false;
             return true;
         }

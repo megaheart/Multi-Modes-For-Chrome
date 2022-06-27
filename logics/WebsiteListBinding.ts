@@ -4,10 +4,12 @@ class WebsiteListBinding{
     private items:Website[];
     private uList:HTMLUListElement;
     private _disableButtons:boolean;
-    static template:HTMLTemplateElement;
-    constructor(uList:HTMLUListElement) {
+    static template:HTMLTemplateElement|null;
+    constructor(uList:HTMLUListElement|null) {
         this.items = [];
-        this.uList = uList;
+        if(uList){
+            this.uList = uList;
+        }
         this._disableButtons = false;
     }
     set disableButtons(value:boolean){
@@ -39,12 +41,15 @@ class WebsiteListBinding{
         this.items.forEach(enumirator);
     }
     private generateElement(value:Website):HTMLLIElement{
-        let li = WebsiteListBinding.template.content.firstElementChild.cloneNode(true) as HTMLLIElement;
-        li.querySelector<HTMLImageElement>("img.favicon").src = 'https://www.google.com/s2/favicons?domain=' + value.url;
-        li.querySelector<HTMLSpanElement>("span.website-title").textContent = value.title;
+        let li = WebsiteListBinding.template!.content.firstElementChild!.cloneNode(true) as HTMLLIElement;
+        li.querySelector<HTMLImageElement>("img.favicon")!.src = 'https://www.google.com/s2/favicons?domain=' + value.url;
+        li.querySelector<HTMLSpanElement>("span.website-title")!.textContent = value.title;
+        li.querySelector<HTMLDivElement>("div.website-header")!.addEventListener("click", ()=>{
+            chrome.tabs.create({url:value.url});
+        });
         let btn = li.querySelector<HTMLButtonElement>("button.remove-website-from-mode");
-        btn.disabled = this._disableButtons;
-        btn.addEventListener("click", ()=>{
+        btn!.disabled = this._disableButtons;
+        btn!.addEventListener("click", ()=>{
             let index = this.items.indexOf(value);
             this.removeAt(index);
             if(this.onListChanged) this.onListChanged(this, "remove", index, value);

@@ -12,15 +12,15 @@ class CreateNewModeLogic{
     private settingInfo:SettingInfo;
     private saveBtn:HTMLButtonElement;
     constructor(dataManager:DataManager, settingInfo:SettingInfo) {
-        this.panel = document.querySelector("#create-new-mode-panel");
-        this.titleInput = this.panel.querySelector("#new-mode-title-input");
+        this.panel = document.querySelector("#create-new-mode-panel")!;
+        this.titleInput = this.panel.querySelector("#new-mode-title-input")!;
         this.websiteListBinding = new WebsiteListBinding(this.panel.querySelector("ul"));
-        this.saveBtn = this.panel.querySelector(".save");
+        this.saveBtn = this.panel.querySelector(".save")!;
         this.saveBtn.addEventListener("click", ()=>{this.saveButton_click();});
-        this.panel.querySelector(".cancel").addEventListener("click", ()=>{this.cancelButton_click();});
+        this.panel.querySelector(".cancel")!.addEventListener("click", ()=>{this.cancelButton_click();});
         this.dataManager = dataManager;
         this.settingInfo = settingInfo;
-        document.querySelector("#load-to-new-mode-button").addEventListener("click", ()=>{
+        document.querySelector("#load-to-new-mode-button")!.addEventListener("click", ()=>{
             this.togglePanel();
         });
     }
@@ -50,10 +50,10 @@ class CreateNewModeLogic{
             //chrome api load tabs
             chrome.tabs.query({},(results)=>{
                 for(let i = 0; i < results.length; i++){
-                    if(this.ingoreWebsite(results[i].url)){
+                    if(this.ingoreWebsite(results[i].url!)){
                         continue;
                     }
-                    this.websiteListBinding.add(new Website(results[i].title, results[i].url));
+                    this.websiteListBinding.add(new Website(results[i].title!, results[i].url!));
                 }
                 this.saveBtn.disabled = this.websiteListBinding.length === 0;
             });
@@ -64,7 +64,7 @@ class CreateNewModeLogic{
             div.addEventListener("click", ()=>{
                 this.togglePanel();
             });
-            document.querySelector("body").appendChild(div);
+            document.querySelector("body")!.appendChild(div);
             this.panel.hidden = false;
             return true;
         }

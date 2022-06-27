@@ -4,7 +4,7 @@
         <meta charset="utf-8"/>
         <link rel="stylesheet" href="popup.css">
     </head>
-    <body>
+    <body style="overflow-y: auto;">
         <div id="main">
             <div id="header">
                 <button id="load-to-new-mode-button" class="button icon-button">
@@ -113,8 +113,10 @@
         </div>
         <template id="group-website-template">
             <li>
-                <img class="favicon"/>
-                <span class="website-title"></span>
+                <div class="website-header">
+                    <img class="favicon"/>
+                    <span class="website-title"></span>
+                </div>
                 <button class="floor-button material-icons-font remove-website-from-mode">close</button>
             </li>
         </template>
