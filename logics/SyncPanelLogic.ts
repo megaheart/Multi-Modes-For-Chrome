@@ -20,7 +20,7 @@ class SyncPanelLogic{
         btn!.disabled = true;
         let modes = await this.dataManager.getAllModes();
         let dataSync:{[key:string]:Mode} = {};
-        modes.forEach(m => {
+        modes!.forEach(m => {
             dataSync[m.id] = m;
         });
         chrome.storage.sync.set({syncModes:dataSync}, ()=>{

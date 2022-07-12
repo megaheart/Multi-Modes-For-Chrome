@@ -72,8 +72,10 @@ class DataManager{
     }
     removeMode(mode:Mode){
         let index = this.modeKeyList?.indexOf(mode.id);
-        if(index && index >= 0){
+        if(index !== null && index !== undefined && index >= 0){
+            //console.log(this.modeKeyList);
             this.modeKeyList?.splice(index, 1);
+            //console.log(this.modeKeyList);
             chrome.storage.local.set({["mode_id_list"]:this.modeKeyList});
             chrome.storage.local.remove([mode.id], undefined);
         }
