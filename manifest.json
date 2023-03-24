@@ -21,7 +21,7 @@
       "default_title": "Multi Modes for Chrome",
       "default_popup": "popup.html"
     },
-    "permissions":["tabs", "storage"],
+    "permissions":["tabs", "storage", "favicon"],
     "options_ui": {
       "page": "settingPage.html",
       "open_in_tab": true

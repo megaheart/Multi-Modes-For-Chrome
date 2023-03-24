@@ -16,15 +16,15 @@ async function Main() {
         settingInfo.ignoreWebsites = l.map(x=>x.url);
         dataManager.saveSettingInfo(settingInfo);
     };
-    document.querySelector("#import-backup").addEventListener("click", ImportBackup);
-    document.querySelector("#export-backup").addEventListener("click", ExportBackup);
+    document.querySelector("#import-backup")!.addEventListener("click", ImportBackup);
+    document.querySelector("#export-backup")!.addEventListener("click", ExportBackup);
     let input = document.querySelector<HTMLInputElement>("#input-ingore-websites>input");
     let regexForIgnoreWebsite = /^([a-zA-Z0-9]+\.)+[a-zA-Z]{2,3}/;
-    document.querySelector("#add-ingore-website").addEventListener("click", ()=>{
-        let url = input.value;
+    document.querySelector("#add-ingore-website")!.addEventListener("click", ()=>{
+        let url = input!.value;
         if(regexForIgnoreWebsite.test(url)){
             websiteListBinding.add(new Website(url,url));
-            input.value = "";
+            input!.value = "";
         }
         else{
             alert(url + " is incorrect format.\nTrue format: <sub domain>.<domain name>.<top level domain>\n"
@@ -51,7 +51,7 @@ async function ImportBackup() {
     upload.type = "file";
     upload.accept = "application/json";
     upload.addEventListener("change", async () => {
-        let file = upload.files[0];
+        let file = upload.files![0];
         let dataSync:{settingInfo:SettingInfo, modes:Mode[]} = JSON.parse(await file.text());
         upload.remove();
         try{
@@ -76,7 +76,7 @@ async function ImportBackup() {
         await dataManager.getAllModeIds();
         dataManager.importManyMode(dataSync.modes);
         let f = websiteListBinding.onListChanged;
-        websiteListBinding.onListChanged = undefined;
+        websiteListBinding.onListChanged = () => {};
         dataSync.settingInfo.ignoreWebsites.forEach(w=>{
             if(!settingInfo.ignoreWebsites.includes(w)){
                 websiteListBinding.add(new Website(w, w));

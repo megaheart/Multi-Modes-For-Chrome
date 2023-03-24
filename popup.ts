@@ -17,9 +17,9 @@ async function Main() {
     let currentModeIdSync = modeOperator.initialize();
     let modeList = await dataManager.getAllModes();
     let currentModeId = await currentModeIdSync;
-    for(var i = 0; i < modeList.length; i++){
-        let binding = ModeBinding.insertNewModeAtSecondOfGroupView(modeList[i], dataManager, true);
-        if(currentModeId == modeList[i].id){
+    for(var i = 0; i < modeList!.length; i++){
+        let binding = ModeBinding.insertNewModeAtSecondOfGroupView(modeList![i], dataManager, true);
+        if(currentModeId == modeList![i].id){
             let ele:HTMLDivElement|null = document.querySelector<HTMLDivElement>("#m-" + (await currentModeIdSync));
             ele?.classList.add("current");
             let ele1 : HTMLButtonElement|undefined|null = ele?.querySelector<HTMLButtonElement>('.switch-mode-on');

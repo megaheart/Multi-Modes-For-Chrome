@@ -1,5 +1,13 @@
 /// <reference path="Website.ts" />
 // Logic of .group-editor-main > .websites-area > ul
+
+function faviconURL(u) {
+    const url = new URL(chrome.runtime.getURL("/_favicon/"));
+    url.searchParams.set("pageUrl", u);
+    url.searchParams.set("size", "32");
+    return url.toString();
+}
+
 class WebsiteListBinding{
     private items:Website[];
     private uList:HTMLUListElement;
@@ -42,7 +50,7 @@ class WebsiteListBinding{
     }
     private generateElement(value:Website):HTMLLIElement{
         let li = WebsiteListBinding.template!.content.firstElementChild!.cloneNode(true) as HTMLLIElement;
-        li.querySelector<HTMLImageElement>("img.favicon")!.src = 'https://www.google.com/s2/favicons?domain=' + value.url;
+        li.querySelector<HTMLImageElement>("img.favicon")!.src = faviconURL(value.url);
         li.querySelector<HTMLSpanElement>("span.website-title")!.textContent = value.title;
         li.querySelector<HTMLDivElement>("div.website-header")!.addEventListener("click", ()=>{
             chrome.tabs.create({url:value.url});

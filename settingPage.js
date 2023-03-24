@@ -68,7 +68,7 @@ class DataManager {
             this.modeKeyList.unshift(mode.id);
             chrome.storage.local.set({ ["mode_id_list"]: this.modeKeyList });
         }
-        chrome.storage.local.set({ [mode.id]: mode }, null);
+        chrome.storage.local.set({ [mode.id]: mode }, undefined);
     }
     importManyMode(modes) {
         for (let i = 0; i < modes.length; i++) {
@@ -77,17 +77,18 @@ class DataManager {
             }
             if (!this.modeKeyList.includes(modes[i].id)) {
                 this.modeKeyList.push(modes[i].id);
-                chrome.storage.local.set({ [modes[i].id]: modes[i] }, null);
+                chrome.storage.local.set({ [modes[i].id]: modes[i] }, undefined);
             }
         }
         chrome.storage.local.set({ ["mode_id_list"]: this.modeKeyList });
     }
     removeMode(mode) {
-        let index = this.modeKeyList.indexOf(mode.id);
-        if (index >= 0) {
-            this.modeKeyList.splice(index, 1);
+        var _a, _b;
+        let index = (_a = this.modeKeyList) === null || _a === void 0 ? void 0 : _a.indexOf(mode.id);
+        if (index !== null && index !== undefined && index >= 0) {
+            (_b = this.modeKeyList) === null || _b === void 0 ? void 0 : _b.splice(index, 1);
             chrome.storage.local.set({ ["mode_id_list"]: this.modeKeyList });
-            chrome.storage.local.remove([mode.id], null);
+            chrome.storage.local.remove([mode.id], undefined);
         }
     }
     getAllModeIds() {
@@ -104,17 +105,18 @@ class DataManager {
         });
     }
     getAllModes() {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             if (this.modeKeyList === undefined) {
-                this.getAllModeIds();
+                yield this.getAllModeIds();
             }
-            if (this.modeKeyList.length === 0)
-                return;
+            if (!((_a = this.modeKeyList) === null || _a === void 0 ? void 0 : _a.length) || ((_b = this.modeKeyList) === null || _b === void 0 ? void 0 : _b.length) === 0)
+                return undefined;
             let keys = this.modeKeyList;
             let modes = [];
             for (var i = 0; i < keys.length; i++) {
                 let mode = yield this.getMode(keys[i]);
-                if (mode === undefined) {
+                if (!mode) {
                     this.modeKeyList.splice(i, 1);
                     chrome.storage.local.set({ ["mode_id_list"]: this.modeKeyList });
                     i--;
@@ -132,10 +134,18 @@ class Website {
         this.url = url;
     }
 }
+function faviconURL(u) {
+    const url = new URL(chrome.runtime.getURL("/_favicon/"));
+    url.searchParams.set("pageUrl", u);
+    url.searchParams.set("size", "32");
+    return url.toString();
+}
 class WebsiteListBinding {
     constructor(uList) {
         this.items = [];
-        this.uList = uList;
+        if (uList) {
+            this.uList = uList;
+        }
         this._disableButtons = false;
     }
     set disableButtons(value) {
@@ -167,8 +177,11 @@ class WebsiteListBinding {
     }
     generateElement(value) {
         let li = WebsiteListBinding.template.content.firstElementChild.cloneNode(true);
-        li.querySelector("img.favicon").src = 'https://www.google.com/s2/favicons?domain=' + value.url;
+        li.querySelector("img.favicon").src = faviconURL(value.url);
         li.querySelector("span.website-title").textContent = value.title;
+        li.querySelector("div.website-header").addEventListener("click", () => {
+            chrome.tabs.create({ url: value.url });
+        });
         let btn = li.querySelector("button.remove-website-from-mode");
         btn.disabled = this._disableButtons;
         btn.addEventListener("click", () => {
@@ -293,7 +306,7 @@ function ImportBackup() {
             yield dataManager.getAllModeIds();
             dataManager.importManyMode(dataSync.modes);
             let f = websiteListBinding.onListChanged;
-            websiteListBinding.onListChanged = undefined;
+            websiteListBinding.onListChanged = () => { };
             dataSync.settingInfo.ignoreWebsites.forEach(w => {
                 if (!settingInfo.ignoreWebsites.includes(w)) {
                     websiteListBinding.add(new Website(w, w));
