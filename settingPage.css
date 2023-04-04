@@ -124,14 +124,26 @@ div#main{
     color: rgb(70, 70, 70);
     cursor: not-allowed;
 }
-#edit-ingore-websites>ul>li>img:first-child{
-    margin-right: 8px;
+
+/* Website list style */
+#edit-ingore-websites>ul>li>div.website-header{
+    display: flex;
+    width: 193px;
+    align-items: center;
+    cursor: pointer;
 }
-#edit-ingore-websites>ul>li>.website-title{
+#edit-ingore-websites>ul>li>div.website-header>img:first-child{
+    margin-right: 8px;
+    height: 16px;
+    width: 16px;
+}
+#edit-ingore-websites>ul>li>div.website-header>.website-title{
     color: rgb(19, 215, 241);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    width: 530px;
-
+    user-select: none;
+}
+#edit-ingore-websites>ul>li>div.website-header:hover>.website-title{
+    color: rgb(0, 184, 239);
 }

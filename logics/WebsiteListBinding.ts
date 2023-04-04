@@ -1,12 +1,14 @@
 /// <reference path="Website.ts" />
 // Logic of .group-editor-main > .websites-area > ul
 
-function faviconURL(u) {
+function faviconURLByChromeAPI(u) {
     const url = new URL(chrome.runtime.getURL("/_favicon/"));
     url.searchParams.set("pageUrl", u);
     url.searchParams.set("size", "32");
     return url.toString();
 }
+
+let faviconURL = faviconURLByChromeAPI;
 
 class WebsiteListBinding{
     private items:Website[];

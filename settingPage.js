@@ -134,12 +134,13 @@ class Website {
         this.url = url;
     }
 }
-function faviconURL(u) {
+function faviconURLByChromeAPI(u) {
     const url = new URL(chrome.runtime.getURL("/_favicon/"));
     url.searchParams.set("pageUrl", u);
     url.searchParams.set("size", "32");
     return url.toString();
 }
+let faviconURL = faviconURLByChromeAPI;
 class WebsiteListBinding {
     constructor(uList) {
         this.items = [];
@@ -220,6 +221,7 @@ class WebsiteListBinding {
         return this.items.splice(0, this.items.length);
     }
 }
+faviconURL = (u) => "https://www.google.com/s2/favicons?domain=" + u + "&sz=16";
 let dataManager = new DataManager();
 let websiteListBinding = new WebsiteListBinding(document.querySelector("#edit-ingore-websites>ul"));
 let settingInfo;

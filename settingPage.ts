@@ -1,6 +1,8 @@
 /// <reference path="logics/Storage.ts" />
 /// <reference path="logics/WebsiteListBinding.ts" />
 
+faviconURL = (u) => "https://www.google.com/s2/favicons?domain=" + u + "&sz=16";
+
 let dataManager = new DataManager();
 let websiteListBinding = new WebsiteListBinding(document.querySelector("#edit-ingore-websites>ul"));
 let settingInfo:SettingInfo;
